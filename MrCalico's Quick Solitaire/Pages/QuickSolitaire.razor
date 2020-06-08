@@ -1,5 +1,9 @@
 ﻿@page "/QuickSolitaire"
-@inherits QuickSolitaireBase;
+@inherits QuickSolitaireBase
+@using static MrCalico_s_Quick_Solitaire.Models.DeckOfCards
+
+<h3>MrCalico's Quick Solitaire</h3>
+
 <style>
 
     .my-container {
@@ -19,24 +23,51 @@
 <div class="container">
     <div class="row my-row">
         <div class="col-1 my-col">ACES</div>
-        <div class="col my-col">Col 1</div>
-        <div class="col my-col">Col 2</div>
-        <div class="col my-col">Col 3</div>
-        <div class="col my-col">Col 4</div>
+        @foreach (List<Card> stack in AceStack)
+        {
+            <div class="col my-col">
+                @foreach (Card card in stack)
+                {
+                    @card.ToString()
+                }
+            </div>
+        }
     </div>
     <div class="row my-row">
         <div class="col-1 my-col">KINGS</div>
-        <div class="col my-col">Col 1</div>
-        <div class="col my-col">Col 2</div>
-        <div class="col my-col">Col 3</div>
-        <div class="col my-col">Col 4</div>
+        @foreach (List<Card> stack in KingStack)
+        {
+            <div class="col my-col">
+                @foreach (Card card in stack)
+                {
+                    @card.ToString()
+                }
+            </div>
+        }
     </div>
 </div>
 
+@if (DrewPile.Count > 0)
+{
+    <li draggable="true">
+        @LastCard.ToString() : @DrewPile.Count
+    </li>
+}
+else
+{
+    <span>@MainDeck.cards.Count Cards Ready!</span>
+}
 
-<div class="justify-content-center">
-    @lastCard.ToString() : : : @(currentCard)
-</div>
+@if (CardFlag)
+{
+    <span>Playable card! - Auto Dragged Up.</span>
+}
+else
+{
+    <span>Not Playable.</span>
+}
+<br />
+<button @onclick="DrawCards">Draw</button>
 
-<br/>
-<div class="justify-content-center"><button @onclick="()=>draw()">Draw Next</button></div>
+
+
